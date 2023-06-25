@@ -55,3 +55,20 @@ The `Makefile` provides targets for building `nomad-holepunch` locally.
 - `make build` (default) - compile and place binary into `output/`
 
 - `make test` - run `go test` to run test cases
+
+### Container
+
+A container is built for every version. They live in the [GitHub Container Registry](https://github.com/shoenig/nomad-holepunch/pkgs/container/nomad-holepunch).
+
+Although it isn't useful to run the container outside of Nomad, it is still possible, e.g.
+
+```shell-session
+➜ podman run --rm ghcr.io/shoenig/nomad-holepunch:v0.1.1
+2023/06/25 19:23:52 INFO  [main] ^^ startup nomad-holepunch ^^
+2023/06/25 19:23:52 TRACE [main] HOLEPUNCH_BIND = 0.0.0.0
+2023/06/25 19:23:52 TRACE [main] HOLEPUNCH_PORT = 3333
+2023/06/25 19:23:52 TRACE [main] HOLEPUNCH_TOKEN = <redacted>
+2023/06/25 19:23:52 TRACE [main] socket path = secrets/api.sock
+2023/06/25 19:23:52 TRACE [main] HOLEPUNCH_ALLOW_ALL = false
+2023/06/25 19:23:52 TRACE [main] HOLEPUNCH_ALLOW_METRICS = true
+```
