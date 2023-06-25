@@ -1,3 +1,7 @@
+LABEL org.opencontainers.image.source=https://github.com/shoenig/nomad-holepunch
+LABEL org.opencontainers.image.description="Proxy Nomad API via Workload Identity"
+LABEL org.opencontainers.image.licenses=MPL-2.0
+
 FROM docker.io/library/golang:alpine as builder
 WORKDIR /build
 ADD . /build
