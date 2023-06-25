@@ -2,6 +2,7 @@ package configuration
 
 import (
 	"os"
+	"path/filepath"
 
 	"github.com/shoenig/loggy"
 )
@@ -23,7 +24,7 @@ func (c *Config) Log(log loggy.Logger) {
 	log.Tracef("HOLEPUNCH_BIND = %s", c.Bind)
 	log.Tracef("HOLEPUNCH_PORT = %s", c.Port)
 	log.Tracef("HOLEPUNCH_TOKEN = %s", "<redacted>")
-	log.Tracef("socket path = %s", c.SocketPath)
+	log.Tracef("HOLEPUNCH_SOCKET_PATH = %s", c.SocketPath)
 	log.Tracef("HOLEPUNCH_ALLOW_ALL = %t", c.Authorization.Disable)
 	log.Tracef("HOLEPUNCH_ALLOW_METRICS = %t", c.Authorization.AllowMetrics)
 }
@@ -33,12 +34,18 @@ func Load() *Config {
 		Bind:       get("HOLEPUNCH_BIND", "0.0.0.0"),
 		Port:       get("HOLEPUNCH_PORT", "3333"),
 		NomadToken: get("NOMAD_TOKEN", "unset"),
-		SocketPath: "secrets/api.sock",
+		SocketPath: get("HOLEPUNCH_SOCKET_PATH", defaultSocketPath()),
 		Authorization: &Firewall{
 			Disable:      false,
 			AllowMetrics: getBool("HOLEPUNCH_ALLOW_METRICS", true),
 		},
 	}
+}
+
+func defaultSocketPath() string {
+	dir := get("NOMAD_SECRETS_DIR", "/secrets")
+	socket := filepath.Join(dir, "api.sock")
+	return socket
 }
 
 func getBool(key string, fallback bool) bool {
