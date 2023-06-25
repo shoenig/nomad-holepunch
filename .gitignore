@@ -1,0 +1,10 @@
+*~
+**/cover.out
+vendor/
+
+# releases
+dist/
+output/
+
+# macOS
+.DS_Store
