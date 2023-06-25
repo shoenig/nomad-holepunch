@@ -24,7 +24,7 @@ func (c *Config) Log(log loggy.Logger) {
 	log.Tracef("HOLEPUNCH_PORT = %s", c.Port)
 	log.Tracef("HOLEPUNCH_TOKEN = %s", "<redacted>")
 	log.Tracef("socket path = %s", c.SocketPath)
-	log.Tracef("HOLEPUNCH_DISABLE_FIREWALL = %t", c.Authorization.Disable)
+	log.Tracef("HOLEPUNCH_ALLOW_ALL = %t", c.Authorization.Disable)
 	log.Tracef("HOLEPUNCH_ALLOW_METRICS = %t", c.Authorization.AllowMetrics)
 }
 
