@@ -15,6 +15,7 @@ by making use of Nomad's Workload Identity authorization token and Unix domain s
 `nomad-holepunch` is configured via environment variables.
 
 | Environment Variable | Description | Default |
+| ---------------------|-------------|---------|
 | `HOLEPUNCH_BIND` | The TCP address to bind to | `0.0.0.0` |
 | `HOLEPUNCH_PORT` | The TCP port to listen on | `3030` |
 | `HOLEPUNCH_ALLOW_ALL` | Allow access to all Nomad endpoints | `false` |
@@ -27,19 +28,19 @@ For local development, `hack/localdev.hcl` provides a convenient way to run the
 is present somewhere on the user's `$PATH` (see Compile), and that Nomad agent
 is running.
 
-running a nomad agent
+##### running a nomad agent
 
 ```shell-session
 sudo nomad agent -dev
 ```
 
-compile and install into $GOPATH/bin, assumed to be on $PATH
+##### compile and install into $GOPATH/bin, assumed to be on $PATH
 
 ```shell-session
 go install
 ```
 
-run the localdev nomad job
+###### run the localdev nomad job
 
 ```shell-session
 nomad job run -var=user=$USER ./hack/localdev.hcl
@@ -49,5 +50,6 @@ nomad job run -var=user=$USER ./hack/localdev.hcl
 
 The `Makefile` provides targets for building `nomad-holepunch` locally.
 
-`make build` (default) - compile and place binary into `output/`:w
-`make test` - run `go test` to run test cases
+- `make build` (default) - compile and place binary into `output/`
+
+- `make test` - run `go test` to run test cases
