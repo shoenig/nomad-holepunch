@@ -18,7 +18,7 @@ func main() {
 
 	mux := web.New(config)
 	address := fmt.Sprintf("%s:%s", config.Bind, config.Port)
-	http.ListenAndServe(address, mux)
+	_ = http.ListenAndServe(address, mux)
 
 	select {
 	// empty
