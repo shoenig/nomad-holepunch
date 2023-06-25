@@ -52,7 +52,7 @@ func (p *proxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // unix domain socketj
 func (p *proxy) toProxy(original *http.Request) (*http.Request, error) {
 	method := original.Method
-	url := "http://nomad" + original.URL.Path
+	url := "http://nomad" + original.URL.Path + "?" + original.URL.RawQuery
 	request, err := http.NewRequest(method, url, nil)
 	request.Header.Set("X-Nomad-Token", p.token)
 	return request, err
