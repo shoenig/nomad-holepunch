@@ -34,7 +34,9 @@ is running.
 sudo nomad agent -dev
 ```
 
-##### compile and install into $GOPATH/bin, assumed to be on $PATH
+##### compile and install
+
+into `$GOPATH/bin`, assumed to be on `$PATH`
 
 ```shell-session
 go install
