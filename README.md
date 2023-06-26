@@ -18,6 +18,7 @@ by making use of Nomad's Workload Identity authorization token and Unix domain s
 | ---------------------|-------------|---------|
 | `HOLEPUNCH_BIND` | The TCP address to bind to | `0.0.0.0` |
 | `HOLEPUNCH_PORT` | The TCP port to listen on | `6120` |
+| `NOMAD_SOCKET_PATH` | The filepath to find the Nomad API `api.sock` file | `$NOMAD_SECRETS_DIR/api.sock` |
 | `HOLEPUNCH_ALLOW_ALL` | Allow access to all Nomad endpoints | `false` |
 | `HOLEPUNCH_ALLOW_METRICS` | Allow access to Nomad /metrics API endpoints | `true` |
 
