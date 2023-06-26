@@ -5,7 +5,7 @@
 #
 # Then just run the job: nomad job run -var=user=$USER localdev.hcl
 #
-# The Nomad API will be exposed on port 3030 by default, and is configurable
+# The Nomad API will be exposed on port 6120 by default, and is configurable
 # with -var=port=<port>
 
 variable "user" {
@@ -15,7 +15,7 @@ variable "user" {
 
 variable "port" {
   type = number
-  default = 3030
+  default = 6120
 }
 
 job "localdev" {
