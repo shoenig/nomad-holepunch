@@ -17,7 +17,7 @@ by making use of Nomad's Workload Identity authorization token and Unix domain s
 | Environment Variable | Description | Default |
 | ---------------------|-------------|---------|
 | `HOLEPUNCH_BIND` | The TCP address to bind to | `0.0.0.0` |
-| `HOLEPUNCH_PORT` | The TCP port to listen on | `3030` |
+| `HOLEPUNCH_PORT` | The TCP port to listen on | `6120` |
 | `HOLEPUNCH_ALLOW_ALL` | Allow access to all Nomad endpoints | `false` |
 | `HOLEPUNCH_ALLOW_METRICS` | Allow access to Nomad /metrics API endpoints | `true` |
 
@@ -66,9 +66,9 @@ Although it isn't useful to run the container outside of Nomad, it is still poss
 ➜ podman run --rm ghcr.io/shoenig/nomad-holepunch:v0.1.1
 2023/06/25 19:23:52 INFO  [main] ^^ startup nomad-holepunch ^^
 2023/06/25 19:23:52 TRACE [main] HOLEPUNCH_BIND = 0.0.0.0
-2023/06/25 19:23:52 TRACE [main] HOLEPUNCH_PORT = 3333
+2023/06/25 19:23:52 TRACE [main] HOLEPUNCH_PORT = 6120
 2023/06/25 19:23:52 TRACE [main] HOLEPUNCH_TOKEN = <redacted>
-2023/06/25 19:23:52 TRACE [main] socket path = secrets/api.sock
+2023/06/25 19:23:52 TRACE [main] HOLEPUNCH_SOCKET_PATH = /secrets/api.sock
 2023/06/25 19:23:52 TRACE [main] HOLEPUNCH_ALLOW_ALL = false
 2023/06/25 19:23:52 TRACE [main] HOLEPUNCH_ALLOW_METRICS = true
 ```

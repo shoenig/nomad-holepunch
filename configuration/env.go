@@ -32,7 +32,7 @@ func (c *Config) Log(log loggy.Logger) {
 func Load() *Config {
 	return &Config{
 		Bind:       get("HOLEPUNCH_BIND", "0.0.0.0"),
-		Port:       get("HOLEPUNCH_PORT", "3333"),
+		Port:       get("HOLEPUNCH_PORT", "6120"),
 		NomadToken: get("NOMAD_TOKEN", "unset"),
 		SocketPath: get("HOLEPUNCH_SOCKET_PATH", defaultSocketPath()),
 		Authorization: &Firewall{
