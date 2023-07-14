@@ -23,18 +23,18 @@ func newFirewall(rules *configuration.Firewall, next http.Handler) http.Handler 
 }
 
 func (f *firewall) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// fast path where the firewall is disabled
-	if f.rules.AllowAll {
-		f.next.ServeHTTP(w, r)
-		return
-	}
-
 	// get the original path
 	path := r.URL.Path
 
 	// fast path where endpoint is not the api
 	if !strings.HasPrefix(path, "/v1/") {
-		http.Error(w, "non-api access is diabled", http.StatusForbidden)
+		http.Error(w, "non-api access is forbidden", http.StatusForbidden)
+		return
+	}
+
+	// fast path where the firewall is set to allow-all api paths
+	if f.rules.AllowAll {
+		f.next.ServeHTTP(w, r)
 		return
 	}
 
