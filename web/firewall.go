@@ -24,7 +24,7 @@ func newFirewall(rules *configuration.Firewall, next http.Handler) http.Handler 
 
 func (f *firewall) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// fast path where the firewall is disabled
-	if f.rules.Disable {
+	if f.rules.AllowAll {
 		f.next.ServeHTTP(w, r)
 		return
 	}

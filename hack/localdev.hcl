@@ -9,13 +9,23 @@
 # with -var=port=<port>
 
 variable "user" {
-  type = string
+  type    = string
   default = "root"
 }
 
 variable "port" {
-  type = number
+  type    = number
   default = 6120
+}
+
+variable "allow_metrics" {
+  type    = bool
+  default = true
+}
+
+variable "allow_all" {
+  type    = bool
+  default = false
 }
 
 job "localdev" {
@@ -62,7 +72,10 @@ job "localdev" {
       }
 
       env {
-        HOLEPUNCH_PORT = "${NOMAD_PORT_api}"
+        HOLEPUNCH_BIND          = "0.0.0.0"
+        HOLEPUNCH_PORT          = "${NOMAD_PORT_api}"
+        HOLEPUNCH_ALLOW_ALL     = "${var.allow_all}"
+        HOLEPUNCH_ALLOW_METRICS = "${var.allow_metrics}"
       }
 
       identity {
