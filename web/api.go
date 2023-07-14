@@ -5,6 +5,7 @@ import (
 	"net"
 	"net/http"
 
+	"github.com/shoenig/go-conceal"
 	"github.com/shoenig/loggy"
 	"github.com/shoenig/nomad-holepunch/configuration"
 )
@@ -12,7 +13,7 @@ import (
 type proxy struct {
 	log        loggy.Logger
 	httpClient *http.Client
-	token      string
+	token      *conceal.Text
 }
 
 func newProxy(config *configuration.Config) http.Handler {
@@ -54,6 +55,6 @@ func (p *proxy) toProxy(original *http.Request) (*http.Request, error) {
 	method := original.Method
 	url := "http://nomad" + original.URL.Path + "?" + original.URL.RawQuery
 	request, err := http.NewRequest(method, url, nil)
-	request.Header.Set("X-Nomad-Token", p.token)
+	request.Header.Set("X-Nomad-Token", p.token.Unveil())
 	return request, err
 }
