@@ -16,7 +16,7 @@ type Config struct {
 }
 
 type Firewall struct {
-	Disable      bool
+	AllowAll     bool
 	AllowMetrics bool
 }
 
@@ -25,7 +25,7 @@ func (c *Config) Log(log loggy.Logger) {
 	log.Tracef("HOLEPUNCH_PORT = %s", c.Port)
 	log.Tracef("HOLEPUNCH_TOKEN = %s", "<redacted>")
 	log.Tracef("HOLEPUNCH_SOCKET_PATH = %s", c.SocketPath)
-	log.Tracef("HOLEPUNCH_ALLOW_ALL = %t", c.Authorization.Disable)
+	log.Tracef("HOLEPUNCH_ALLOW_ALL = %t", c.Authorization.AllowAll)
 	log.Tracef("HOLEPUNCH_ALLOW_METRICS = %t", c.Authorization.AllowMetrics)
 }
 
@@ -36,7 +36,7 @@ func Load() *Config {
 		NomadToken: get("NOMAD_TOKEN", "unset"),
 		SocketPath: get("HOLEPUNCH_SOCKET_PATH", defaultSocketPath()),
 		Authorization: &Firewall{
-			Disable:      false,
+			AllowAll:     getBool("HOLEPUNCH_ALLOW_ALL", false),
 			AllowMetrics: getBool("HOLEPUNCH_ALLOW_METRICS", true),
 		},
 	}
