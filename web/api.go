@@ -35,12 +35,14 @@ func (p *proxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	request, err := p.toProxy(r)
 	if err != nil {
+		p.log.Errorf("failed to create request: %v", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	response, err := p.httpClient.Do(request)
 	if err != nil {
+		p.log.Errorf("failed to do request: %v", err)
 		http.Error(w, err.Error(), http.StatusBadGateway)
 		return
 	}
