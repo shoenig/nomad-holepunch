@@ -38,7 +38,7 @@ func upstream(t *testing.T) *http.Server {
 func server(t *testing.T, c *configuration.Config) *http.Server {
 	s := &http.Server{
 		Addr:    "127.0.0.1:5431",
-		Handler: newFirewall(c.Authorization, newProxy(c)),
+		Handler: newFirewall(c.Rules, newProxy(c)),
 	}
 	t.Cleanup(func() { _ = s.Close() })
 
@@ -48,11 +48,11 @@ func server(t *testing.T, c *configuration.Config) *http.Server {
 
 func config(f *configuration.Firewall) *configuration.Config {
 	return &configuration.Config{
-		NomadToken:    conceal.New("abc123"),
-		Bind:          "127.0.0.1",
-		Port:          "5431",
-		SocketPath:    socket(),
-		Authorization: f,
+		NomadToken: conceal.New("abc123"),
+		Bind:       "127.0.0.1",
+		Port:       "5431",
+		SocketPath: socket(),
+		Rules:      f,
 	}
 }
 
@@ -64,50 +64,50 @@ func Test_ServeHTTP(t *testing.T) {
 		exp      int // status code
 	}{
 		{
-			name: "defaults - metrics",
+			name: "defaults#metrics",
 			path: "/v1/metrics",
 			firewall: &configuration.Firewall{
-				AllowMetrics: true,
+				Metrics: true,
 			},
 			exp: 200,
 		},
 		{
-			name: "defaults - nodes",
+			name: "defaults#nodes",
 			path: "/v1/nodes",
 			firewall: &configuration.Firewall{
-				AllowMetrics: true,
+				Metrics: true,
 			},
 			exp: 403,
 		},
 		{
-			name: "defaults - not api",
+			name: "defaults#not api",
 			path: "/any",
 			firewall: &configuration.Firewall{
-				AllowMetrics: true,
+				Metrics: true,
 			},
 			exp: 403,
 		},
 		{
-			name: "allow all - metrics",
+			name: "allow all#metrics",
 			path: "/v1/metrics",
 			firewall: &configuration.Firewall{
-				AllowAll: true,
+				All: true,
 			},
 			exp: 200,
 		},
 		{
-			name: "allow all - nodes",
+			name: "allow all#nodes",
 			path: "/v1/nodes",
 			firewall: &configuration.Firewall{
-				AllowAll: true,
+				All: true,
 			},
 			exp: 200,
 		},
 		{
-			name: "allow all - not api",
+			name: "allow all#not api",
 			path: "/any",
 			firewall: &configuration.Firewall{
-				AllowAll: true,
+				All: true,
 			},
 			exp: 403, // only allows api access
 		},

@@ -20,7 +20,17 @@ by making use of Nomad's Workload Identity authorization token and Unix domain s
 | `HOLEPUNCH_PORT` | The TCP port to listen on | `6120` |
 | `NOMAD_SOCKET_PATH` | The filepath to find the Nomad API `api.sock` file | `$NOMAD_SECRETS_DIR/api.sock` |
 | `HOLEPUNCH_ALLOW_ALL` | Allow access to all Nomad endpoints | `false` |
-| `HOLEPUNCH_ALLOW_METRICS` | Allow access to Nomad /metrics API endpoints | `true` |
+| `HOLEPUNCH_ALLOW_METRICS` | Allow access to Nomad /metrics API endpoint | `true` |
+| `HOLEPUNCH_ALLOW_NODES` | Allow access to Nomad /node API endpoint | `false` |
+| `HOLEPUNCH_ALLOW_AGENT_HEALTH` | Allow access to Nomad /agent/health endpoint | `true` |
+| `HOLEPUNCH_ALLOW_AGENT_SELF` | Allow access to Nomad /agent/self endpoint | `false` |
+| `HOLEPUNCH_ALLOW_AGENT_MEMBERS` | Allow access to Nomad /agent/members endpoint | `false` |
+| `HOLEPUNCH_ALLOW_AGENT_SERVERS` | Allow access to Nomad /agent/servers endpoint | `false` |
+| `HOLEPUNCH_ALLOW_AGENT_HOST` | Allow access to Nomad /agent/host endpoint | `false` |
+| `HOLEPUNCH_ALLOW_AGENT_SCHEDULERS` | Allow access to Nomad /agent/schedulers(/config) endpoints | `false` |
+| `HOLEPUNCH_ALLOW_PLUGINS` | Allow access to Nomad /plugins endpoint | `false` |
+| `HOLEPUNCH_ALLOW_SERVICES` | Allow access to Nomad /service(s/*) endpoints | `false` |
+| `HOLEPUNCH_ALLOW_STATUS` | Allow access to Nomad /status/(leader,peers) endpoints | `false` |
 
 ## Local Development
 

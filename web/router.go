@@ -10,7 +10,7 @@ func New(config *configuration.Config) *http.ServeMux {
 	mux := http.NewServeMux()
 
 	mux.Handle("/health", newHealth())
-	mux.Handle("/v1/", newFirewall(config.Authorization, newProxy(config)))
+	mux.Handle("/v1/", newFirewall(config.Rules, newProxy(config)))
 	mux.Handle("/", newFallback())
 	return mux
 }
