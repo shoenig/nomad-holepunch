@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/shoenig/go-conceal"
 	"github.com/shoenig/nomad-holepunch/configuration"
 	"github.com/shoenig/test/must"
 )
@@ -47,7 +48,7 @@ func server(t *testing.T, c *configuration.Config) *http.Server {
 
 func config(f *configuration.Firewall) *configuration.Config {
 	return &configuration.Config{
-		NomadToken:    "abc123",
+		NomadToken:    conceal.New("abc123"),
 		Bind:          "127.0.0.1",
 		Port:          "5431",
 		SocketPath:    socket(),
