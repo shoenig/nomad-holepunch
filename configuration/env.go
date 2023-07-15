@@ -30,11 +30,11 @@ func (c *Config) Log(log loggy.Logger) {
 	log.Tracef("HOLEPUNCH_ALLOW_METRICS = %t", c.Authorization.AllowMetrics)
 }
 
-func Load() *Config {
+func Load(log loggy.Logger) *Config {
 	c := new(Config)
 	c.Authorization = new(Firewall)
 
-	_ = env.ParseOS(env.Schema{
+	err := env.ParseOS(env.Schema{
 		// setup
 		"HOLEPUNCH_BIND":        env.StringOr(&c.Bind, "0.0.0.0"),
 		"HOLEPUNCH_PORT":        env.StringOr(&c.Port, "6120"),
@@ -45,6 +45,9 @@ func Load() *Config {
 		"HOLEPUNCH_ALLOW_ALL":     env.BoolOr(&c.Authorization.AllowAll, false),
 		"HOLEPUNCH_ALLOW_METRICS": env.BoolOr(&c.Authorization.AllowMetrics, true),
 	})
+	if err != nil {
+		log.Errorf("error extracting config from environment: %v", err)
+	}
 
 	return c
 }

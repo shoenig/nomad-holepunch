@@ -13,7 +13,7 @@ func main() {
 	log := loggy.New("main")
 	log.Infof("^^ startup nomad-holepunch ^^")
 
-	config := configuration.Load()
+	config := configuration.Load(log)
 	config.Log(log)
 
 	mux := web.New(config)
