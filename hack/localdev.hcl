@@ -9,23 +9,26 @@
 # with -var=port=<port>
 
 variable "user" {
-  type    = string
-  default = "root"
+  type        = string
+  description = "The user to run as (try -var=user=$USER)"
 }
 
 variable "port" {
-  type    = number
-  default = 6120
+  type        = number
+  description = "The TCP port to listen on"
+  default     = 6120
 }
 
 variable "allow_metrics" {
-  type    = bool
-  default = true
+  type        = bool
+  description = "Allow access to /v1/metrics endpoint"
+  default     = true
 }
 
 variable "allow_all" {
-  type    = bool
-  default = false
+  type        = bool
+  description = "Allow access to all  /v1/ endpoints"
+  default     = false
 }
 
 job "localdev" {
