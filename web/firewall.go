@@ -4,21 +4,22 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/hashicorp/go-set"
 	"github.com/shoenig/loggy"
 	"github.com/shoenig/nomad-holepunch/configuration"
 )
 
 type firewall struct {
-	log   loggy.Logger
-	rules *configuration.Firewall
-	next  http.Handler
+	log     loggy.Logger
+	ruleset *set.Set[string]
+	next    http.Handler
 }
 
 func newFirewall(rules *configuration.Firewall, next http.Handler) http.Handler {
 	return &firewall{
-		log:   loggy.New("firewall"),
-		rules: rules,
-		next:  next,
+		log:     loggy.New("firewall"),
+		ruleset: initialize(rules),
+		next:    next,
 	}
 }
 
@@ -26,30 +27,81 @@ func (f *firewall) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// get the original path
 	path := r.URL.Path
 
+	f.log.Tracef("checking path %q", path)
+
+	// compare path with allowable rules
+	if f.allow(path) {
+		f.next.ServeHTTP(w, r)
+		return
+	}
+
+	// otherwise the request is forbidden
+	http.Error(w, "forbidden", http.StatusForbidden)
+}
+
+func (f *firewall) allow(path string) bool {
 	// fast path where endpoint is not the api
 	if !strings.HasPrefix(path, "/v1/") {
-		http.Error(w, "non-api access is forbidden", http.StatusForbidden)
-		return
+		return false
 	}
 
-	// fast path where the firewall is set to allow-all api paths
-	if f.rules.AllowAll {
-		f.next.ServeHTTP(w, r)
-		return
+	// fast path for allow all
+	if f.ruleset.Contains("*") {
+		return true
 	}
 
-	// strip off /v1/ prefix, we can assume api endpoints from here
-	path = strings.TrimPrefix(path, "/v1/")
-
-	elem0 := strings.Split(path, "/")[0]
-	f.log.Infof("path is %q, elem0 is %s", path, elem0)
-
-	// check if the firewall rules allow this
-	// this could do with a good bit of refactoring
-	if elem0 == "metrics" && f.rules.AllowMetrics {
-		f.next.ServeHTTP(w, r)
-		return
+	// check for service lookup
+	if strings.HasPrefix(path, "/v1/service/") && f.ruleset.Contains("/v1/services") {
+		return true
 	}
 
-	http.Error(w, "forbidden", http.StatusForbidden)
+	// check if ruleset allows access to path
+	if f.ruleset.Contains(path) {
+		return true
+	}
+
+	return false
+}
+
+func initialize(rules *configuration.Firewall) *set.Set[string] {
+	s := set.New[string](10)
+	if rules.All {
+		s.Insert("*")
+	}
+	if rules.Metrics {
+		s.Insert("/v1/metrics")
+	}
+	if rules.Nodes {
+		s.Insert("/v1/nodes")
+	}
+	if rules.AgentHealth {
+		s.Insert("/v1/agent/health")
+	}
+	if rules.AgentMembers {
+		s.Insert("/v1/agent/members")
+	}
+	if rules.AgentServers {
+		s.Insert("/v1/agent/servers")
+	}
+	if rules.AgentSelf {
+		s.Insert("/v1/agent/self")
+	}
+	if rules.AgentHost {
+		s.Insert("/v1/agent/host")
+	}
+	if rules.AgentSchedulers {
+		s.Insert("/v1/agent/schedulers")
+		s.Insert("/v1/agent/schedulers/config")
+	}
+	if rules.Plugins {
+		s.Insert("/v1/plugins")
+	}
+	if rules.Services {
+		s.Insert("/v1/services")
+	}
+	if rules.Status {
+		s.Insert("/v1/status/leader")
+		s.Insert("/v1/status/peers")
+	}
+	return s
 }
