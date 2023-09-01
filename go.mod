@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/hashicorp/go-set v0.1.13
-	github.com/shoenig/extractors v0.3.2
+	github.com/shoenig/extractors v0.3.3
 	github.com/shoenig/go-conceal v0.5.1
 	github.com/shoenig/loggy v0.3.2
 	github.com/shoenig/test v0.6.6
