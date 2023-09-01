@@ -7,7 +7,7 @@ require (
 	github.com/shoenig/extractors v0.3.2
 	github.com/shoenig/go-conceal v0.5.1
 	github.com/shoenig/loggy v0.3.2
-	github.com/shoenig/test v0.6.6
+	github.com/shoenig/test v0.6.7
 )
 
 require (
