@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/hashicorp/go-set"
+	"github.com/hashicorp/go-set/v2"
 	"github.com/shoenig/loggy"
 	"github.com/shoenig/nomad-holepunch/configuration"
 )
